@@ -1,0 +1,94 @@
+'Programmiert in Smilebasic 3.6.0 für Nintendo 3DS / NEW 3DS
+'Programmiert im Jahre 2020. Veröffentlicht 2021
+'Originalgrösse: 3,7kb
+Tabstep=15
+Acls
+bgmstop
+color 6,0
+xscreen 2
+'Ladet die Graphischen Elemente
+@loadfiles
+sprfile$="GRP4:T-REX_GRAPHICS"
+savfile$="TXT:SAVE"
+load sprfile$,0
+@10
+cls
+spclr
+w=600
+playerpos=260
+playerpos2=225
+li=6
+xspawn=rnd(2)
+if xspawn==0 then e=225
+if xspawn==1 then e=225
+@0
+color 6,0
+if w>=590 then o=rnd(300)
+if o<=90 then@0
+width 8
+cou=rnd(16)
+for ac=1to 50
+a=rnd(4)+58017
+'zeichnet den grund
+locate ,25
+?chr$(a);
+next ac
+scroll 0,0
+locate 0,26 ?"■" *100
+'springen
+if pla==15 then jump=jump+1:playerpos2=200
+if jump==5 then beep 8, -1000,30
+if jump>= 10 then playerpos2=225:jump=0:pla=0
+'punktestand und Versuche
+locate 0,28
+?"Leben: ";round (li/2), : ?"Punktestand ";t
+t=t+1
+w=w-10
+wait
+'Gegner 
+spset 2,32,0,16,32,1
+sphome 2, 195,50
+spcol 2,W,E,16,16
+spscale 2,1,1
+spofs 2,W,E,100
+'zweiter kaktus
+spset 1,32,0,16,32,1
+sphome 1,195,50
+spcol 1,w+o,e,16,16,TRUE,2
+spscale 1,1,1
+spofs 1,W+o, e,100
+ssw=w+o
+if ssw<=200 then goto@ne
+'spieler bewegung
+if button()==#a then pla=15
+if button()==#down then playerpos2=225
+spset false, false, false, 32,true
+spcol 0, playerpos,playerpos2,32,16,1,2
+sphome false, 195,50
+spscale 0,1,1
+spofs 0, playerpos,playerpos2,100
+wait
+'Kollision 
+pox=sphitsp(0,2)
+poy=sphitsp(1,0)
+if pox==1 then@9
+if poy then@9
+goto@0
+'gameover
+w=600
+xspawn=rnd(2)
+if xspawn==0then e=225
+if xspawn then e=225
+goto@0
+@9
+Li=li-1
+wait
+if li==0then@ded
+goto@0
+@ded
+width 16
+locate 7,6?"gameover"
+locate 10,10 ?t
+wait 100
+END
+
